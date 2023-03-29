@@ -20,20 +20,26 @@ class ModelTest(TestCase):
 
         favorite_test = FAVORITE.objects.create(user=test_user, beer=beer_test)
 
+
         # *Save the model to the database
         favorite_test.save()
 
         beer_test.save()
         brewery_test.save()
 
+        tag_test = TAG.objects.create(beer=beer_test, tag='first tag',
+                                      created_by=test_user)
+        tag_test.save()
+
         # *Retrieve the saved model from the database
         beer_save_test = BEER.objects.get(pk=beer_test.pk)
         brewery_save_test = BREWERY.objects.get(pk=brewery_test.pk)
 
         favorite_save_test = FAVORITE.objects.get(pk=favorite_test.pk)
+        tag_save_test = TAG.objects.get(pk=tag_test.pk)
 
         # *Check that the saved model has the correct values
         self.assertEqual(beer_save_test.name, 'test beer')
         self.assertEqual(brewery_save_test.name, 'test brewery')
         self.assertEqual(favorite_save_test.user.username, 'test_user')
-
+        self.assertEqual(tag_save_test.tag, 'first tag')
