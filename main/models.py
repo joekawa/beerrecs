@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
+
 # Create your models here.
 
 STATES = (
@@ -56,6 +59,25 @@ STATES = (
     ("WY", "Wyoming")
 )
 
+ACTIVITY_TYPE = (
+    ('U', 'UPVOTE'),
+    ('D', 'DOWNVOTE')
+    )
+
+
+class VOTE(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    vote_choice = models.CharField(choices=ACTIVITY_TYPE, max_length=1)
+
+    class Meta:
+        unique_together = (('user', 'content_type', 'object_id'),)
+
+    def __str__(self):
+        return f'{self.user} voted {self.vote_choice} on {self.content_object}'
+
 
 class PROFILE(models.Model):
     user = models.ForeignKey(User, blank=False, null=False,
@@ -76,6 +98,7 @@ class BREWERY(models.Model):
     country = models.TextField(max_length=50, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
+    votes = GenericRelation(VOTE)
 
 
 class BEER(models.Model):
@@ -84,7 +107,7 @@ class BEER(models.Model):
     brewery = models.ForeignKey(BREWERY, on_delete=models.CASCADE, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
-
+    votes = GenericRelation(VOTE)
 
 class FAVORITE(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -98,3 +121,7 @@ class TAG(models.Model):
     likes = models.IntegerField(default=0)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
+    votes = GenericRelation(VOTE)
+
+
+

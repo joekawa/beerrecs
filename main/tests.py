@@ -25,6 +25,10 @@ class ModelTest(TestCase):
                                               city='Omaha',
                                               state='NE')
 
+        vote = VOTE.objects.create(user=test_user, vote_choice='U',
+                                   content_object=beer_test,
+                                   object_id=beer_test.pk)
+
 
         # *Save the model to the database
         favorite_test.save()
@@ -32,9 +36,11 @@ class ModelTest(TestCase):
         beer_test.save()
         brewery_test.save()
         profile_test.save()
+        vote.save()
 
         tag_test = TAG.objects.create(beer=beer_test, tag='first tag',
-                                      created_by=test_user)
+                                      created_by=test_user
+                                      )
         tag_test.save()
 
         # *Retrieve the saved model from the database
@@ -44,6 +50,7 @@ class ModelTest(TestCase):
         favorite_save_test = FAVORITE.objects.get(pk=favorite_test.pk)
         tag_save_test = TAG.objects.get(pk=tag_test.pk)
         profile_save_test = PROFILE.objects.get(pk=profile_test.pk)
+        vote_save_test = VOTE.objects.get(object_id=beer_test.pk)
 
         # *Check that the saved model has the correct values
         self.assertEqual(beer_save_test.name, 'test beer')
@@ -51,3 +58,5 @@ class ModelTest(TestCase):
         self.assertEqual(favorite_save_test.user.username, 'test_user')
         self.assertEqual(tag_save_test.tag, 'first tag')
         self.assertEqual(profile_save_test.city, 'Omaha')
+        self.assertEqual(vote_save_test.content_object, beer_test)
+
