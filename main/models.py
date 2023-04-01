@@ -61,19 +61,20 @@ STATES = (
 
 ACTIVITY_TYPE = (
     ('U', 'UPVOTE'),
-    ('D', 'DOWNVOTE')
+    ('D', 'DOWNVOTE'),
+    ('F', 'FAVORITE')
     )
 
 
-class VOTE(models.Model):
+class ACTIVITY(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    vote_choice = models.CharField(choices=ACTIVITY_TYPE, max_length=1)
+    activity = models.CharField(choices=ACTIVITY_TYPE, max_length=1)
 
     class Meta:
-        unique_together = (('user', 'content_type', 'object_id'),)
+        unique_together = (('user', 'content_type', 'object_id', 'activity'),)
 
     def __str__(self):
         return f'{self.user} voted {self.vote_choice} on {self.content_object}'
@@ -98,7 +99,7 @@ class BREWERY(models.Model):
     country = models.TextField(max_length=50, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
-    votes = GenericRelation(VOTE)
+    activity = GenericRelation(ACTIVITY)
 
 
 class BEER(models.Model):
@@ -107,8 +108,9 @@ class BEER(models.Model):
     brewery = models.ForeignKey(BREWERY, on_delete=models.CASCADE, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
-    votes = GenericRelation(VOTE)
+    activity = GenericRelation(ACTIVITY)
 
+#! FAVORITE MODEL IS DEPRECIATED AND NOT USED
 class FAVORITE(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     beer = models.ForeignKey(BEER, on_delete=models.CASCADE)
@@ -121,7 +123,7 @@ class TAG(models.Model):
     likes = models.IntegerField(default=0)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
-    votes = GenericRelation(VOTE)
+    activity = GenericRelation(ACTIVITY)
 
 
 

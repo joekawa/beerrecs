@@ -3,6 +3,7 @@ from main.models import *
 from django.contrib.auth.models import User
 # Create your tests here.
 
+
 class ModelTest(TestCase):
     def test_create_and_save_model(self):
 
@@ -18,25 +19,24 @@ class ModelTest(TestCase):
                                               description='brewery in ' +
                                               'test script')
 
-        favorite_test = FAVORITE.objects.create(user=test_user, beer=beer_test)
-
         profile_test = PROFILE.objects.create(user=test_user,
                                               email='joekawa@yahoo.com',
                                               city='Omaha',
                                               state='NE')
 
-        vote = VOTE.objects.create(user=test_user, vote_choice='U',
-                                   content_object=beer_test,
-                                   object_id=beer_test.pk)
+        vote = ACTIVITY.objects.create(user=test_user, activity='U',
+                                       content_object=beer_test,
+                                       object_id=beer_test.pk)
+        favorite = ACTIVITY.objects.create(user=test_user, activity='F',
+                                           content_object=beer_test,
+                                           object_id=beer_test.pk)
 
-
-        # *Save the model to the database
-        favorite_test.save()
-
+        # * Save the model to the database
         beer_test.save()
         brewery_test.save()
         profile_test.save()
         vote.save()
+        favorite.save()
 
         tag_test = TAG.objects.create(beer=beer_test, tag='first tag',
                                       created_by=test_user
@@ -47,10 +47,12 @@ class ModelTest(TestCase):
         beer_save_test = BEER.objects.get(pk=beer_test.pk)
         brewery_save_test = BREWERY.objects.get(pk=brewery_test.pk)
 
-        favorite_save_test = FAVORITE.objects.get(pk=favorite_test.pk)
         tag_save_test = TAG.objects.get(pk=tag_test.pk)
         profile_save_test = PROFILE.objects.get(pk=profile_test.pk)
-        vote_save_test = VOTE.objects.get(object_id=beer_test.pk)
+        vote_save_test = ACTIVITY.objects.get(object_id=beer_test.pk,
+                                              activity='U')
+        favorite_save_test = ACTIVITY.objects.get(object_id=beer_test.pk,
+                                                  activity='F')
 
         # *Check that the saved model has the correct values
         self.assertEqual(beer_save_test.name, 'test beer')
@@ -59,4 +61,6 @@ class ModelTest(TestCase):
         self.assertEqual(tag_save_test.tag, 'first tag')
         self.assertEqual(profile_save_test.city, 'Omaha')
         self.assertEqual(vote_save_test.content_object, beer_test)
-
+        self.assertEqual(favorite_save_test.content_object, beer_test)
+        self.assertEqual(vote_save_test.activity, 'U')
+        self.assertEqual(favorite_save_test.activity, 'F')
