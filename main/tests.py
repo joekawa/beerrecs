@@ -71,3 +71,7 @@ class TestViews(TestCase):
     def test_home_view(self):
         response = self.client.get(reverse('main:home'))
         self.assertEqual(response.status_code, 200)
+
+    def test_search_view(self):
+        response = self.client.get(reverse('main:search'))
+        self.assertEqual(response.status_code, 200)
