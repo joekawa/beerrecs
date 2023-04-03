@@ -125,5 +125,3 @@ class TAG(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     activity = GenericRelation(ACTIVITY)
 
-
-

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Add Beer Input</h1>
+  <form id="beer-input-form" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="response-message"></div>
+
+  <script>
+    const form = document.getElementById('beer-input-form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      fetch('{% url "add_beer_input" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        const message = document.getElementById('response-message');
+        message.innerText = data.message;
+        message.style.color = data.success ? 'green' : 'red';
+      })
+      .catch(error => console.error(error));
+    });
+  </script>
+{% endblock %}

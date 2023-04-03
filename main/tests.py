@@ -1,6 +1,7 @@
 from django.test import TestCase
 from main.models import *
 from django.contrib.auth.models import User
+from django.urls import reverse
 # Create your tests here.
 
 
@@ -64,3 +65,9 @@ class ModelTest(TestCase):
         self.assertEqual(favorite_save_test.content_object, beer_test)
         self.assertEqual(vote_save_test.activity, 'U')
         self.assertEqual(favorite_save_test.activity, 'F')
+
+
+class TestViews(TestCase):
+    def test_home_view(self):
+        response = self.client.get(reverse('main:home'))
+        self.assertEqual(response.status_code, 200)
