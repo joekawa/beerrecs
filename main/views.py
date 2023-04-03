@@ -11,3 +11,7 @@ def search(request):
 
 def all_beers(request):
     return render(request, 'all_beers.html', {'message': 'All Beers success'})
+
+
+def my_beers(request):
+    return render(request, 'my_beers.html', {'message': 'My Beers Success'})
