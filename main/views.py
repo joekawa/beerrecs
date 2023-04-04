@@ -18,11 +18,18 @@ def my_beers(request):
     return render(request, 'my_beers.html', {'message': 'My Beers Success'})
 
 
-# ! PUT IN 2 AS A PLACEHOLDER ID
 def beer(request, id):
     beer = get_object_or_404(BEER, id=id)
 
     return render(request, 'beer.html', {'name': beer.name,
                                          'description': beer.description,
-                                         'brewery': 'Coors Light'
+                                         'brewery': 'Coors Light'  #!placeholder
                                          })
+
+
+def brewery(request, id):
+    brewery = get_object_or_404(BREWERY, id=id)
+
+    return render(request, 'brewery.html', {'name': brewery.name,
+                                            'description': brewery.description,
+                                            })

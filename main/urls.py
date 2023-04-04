@@ -9,4 +9,5 @@ urlpatterns = [
     path('all_beers', views.all_beers, name='all_beers'),
     path('my_beers', views.my_beers, name='my_beers'),
     path('beer/<id>', views.beer, name='beer'),
+    path('brewery/<id>', views.brewery, name='brewery'),
 ]

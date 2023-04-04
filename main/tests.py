@@ -89,3 +89,9 @@ class TestViews(TestCase):
         response = self.client.get(reverse('main:beer',
                                            kwargs={'id': beer.pk}))
         self.assertEqual(response.status_code, 200)
+
+    def test_brewery_view(self):
+        brewery = BREWERY.objects.create(name='test', description='test')
+        response = self.client.get(reverse('main:brewery',
+                                           kwargs={'id': brewery.pk}))
+        self.assertEqual(response.status_code, 200)
