@@ -104,7 +104,7 @@ class BREWERY(models.Model):
 
 class BEER(models.Model):
     name = models.TextField(max_length=40)
-    description = models.TextField(max_length=500)
+    description = models.TextField(max_length=500, null=True)
     brewery = models.ForeignKey(BREWERY, on_delete=models.CASCADE, null=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
