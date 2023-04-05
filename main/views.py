@@ -33,3 +33,7 @@ def brewery(request, id):
     return render(request, 'brewery.html', {'name': brewery.name,
                                             'description': brewery.description,
                                             })
+
+
+def favorites(request, user_id):
+    return render(request, 'favorites.html', {'favorite':  'This is my fave'})

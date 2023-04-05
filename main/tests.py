@@ -95,3 +95,9 @@ class TestViews(TestCase):
         response = self.client.get(reverse('main:brewery',
                                            kwargs={'id': brewery.pk}))
         self.assertEqual(response.status_code, 200)
+
+    def test_favorites_view(self):
+        user = User.objects.create(username='test', password='Password')
+        response = self.client.get(reverse('main:favorites',
+                                           kwargs={'user_id': user.pk}))
+        self.assertEqual(response.status_code, 200)
