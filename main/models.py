@@ -109,6 +109,8 @@ class BEER(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_date = models.DateTimeField(default=timezone.now)
     activity = GenericRelation(ACTIVITY)
+    style = models.TextField(max_length=50, null=True)
+
 
 #! FAVORITE MODEL IS DEPRECIATED AND NOT USED
 class FAVORITE(models.Model):
