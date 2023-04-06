@@ -74,10 +74,7 @@ class ACTIVITY(models.Model):
     activity = models.CharField(choices=ACTIVITY_TYPE, max_length=1)
 
     class Meta:
-        unique_together = (('user', 'content_type', 'object_id', 'activity'),)
-
-    def __str__(self):
-        return f'{self.user} voted {self.vote_choice} on {self.content_object}'
+        unique_together = (('user', 'content_type', 'object_id', 'activity'))
 
 
 class PROFILE(models.Model):
@@ -122,7 +119,6 @@ class FAVORITE(models.Model):
 class TAG(models.Model):
     beer = models.ForeignKey(BEER, on_delete=models.CASCADE)
     tag = models.TextField(max_length=20)
-    likes = models.IntegerField(default=0)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
     activity = GenericRelation(ACTIVITY)
