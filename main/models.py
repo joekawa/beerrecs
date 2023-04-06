@@ -116,10 +116,5 @@ class FAVORITE(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
 
-class TAG(models.Model):
-    beer = models.ForeignKey(BEER, on_delete=models.CASCADE)
-    tag = models.TextField(max_length=20)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_date = models.DateTimeField(default=timezone.now)
-    activity = GenericRelation(ACTIVITY)
+
 

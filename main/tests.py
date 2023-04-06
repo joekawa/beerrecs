@@ -2,6 +2,9 @@ from django.test import TestCase
 from main.models import *
 from django.contrib.auth.models import User
 from django.urls import reverse
+from .forms import SignUpForm
+
+
 # Create your tests here.
 
 
@@ -101,3 +104,70 @@ class TestViews(TestCase):
         response = self.client.get(reverse('main:favorites',
                                            kwargs={'user_id': user.pk}))
         self.assertEqual(response.status_code, 200)
+
+
+class SignUpFormTest(TestCase):
+    def setUp(self):
+        self.url = reverse('main:signup')
+
+    def test_signup_form_valid(self):
+        data = {
+            'username': 'testuser',
+            'password1': 'testpassword',
+            'password2': 'testpassword',
+            'email': 'testuser@example.com',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'city': 'Testville',
+            'state': 'CA',
+            'zip_code': '12345'
+        }
+        form = SignUpForm(data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_signup_form_invalid(self):
+        data = {
+            'username': '',
+            'password1': 'testpassword',
+            'password2': 'testpassword',
+            'email': 'testuser@example.com',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'city': 'Testville',
+            'state': 'CA',
+            'zip_code': '12345'
+        }
+        form = SignUpForm(data=data)
+        self.assertFalse(form.is_valid())
+
+    def test_signup_view_post(self):
+        data = {
+            'username': 'testuser',
+            'password1': 'testpassword',
+            'password2': 'testpassword',
+            'email': 'testuser@example.com',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'city': 'Testville',
+            'state': 'CA',
+            'zip_code': '12345'
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(User.objects.filter(username=data['username']).exists())
+
+    def test_signup_view_invalid_post(self):
+        data = {
+            'username': '',
+            'password1': 'testpassword',
+            'password2': 'testpassword',
+            'email': 'testuser@example.com',
+            'first_name': 'Test',
+            'last_name': 'User',
+            'city': 'Testville',
+            'state': 'CA',
+            'zip_code': '12345'
+        }
+        response = self.client.post(self.url, data=data)
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(User.objects.filter(username=data['username']).exists())
