@@ -79,7 +79,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_all_beers_view(self):
-        response = self.client.get(reverse('main:all_beers'))
+        response = self.client.get(reverse('main:beer_list'))
         self.assertEqual(response.status_code, 200)
 
     def test_my_beers_view(self):
@@ -197,3 +197,43 @@ class LoginTestCase(TestCase):
         self.assertContains(response,
                             "Your username and password didn't match." +
                             " Please try again.")
+
+
+class BeerListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        test_user = User.objects.create(username='test_user',
+                                        password='Password')
+        # create 2 beers for testing purposes
+        BEER.objects.create(
+            name='Test Beer 1',
+            description='This is the description for test beer 1.',
+            #brewery='Test Brewery 1',
+            created_by=test_user,
+            style='Test Style 1'
+        )
+        BEER.objects.create(
+            name='Test Beer 2',
+            description='This is the description for test beer 2.',
+            #brewery='Test Brewery 2',
+            created_by=test_user,
+            style='Test Style 2'
+        )
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/beer/2')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('main:beer_list'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('main:beer_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'beer_list.html')
+
+    def test_lists_all_beers(self):
+        response = self.client.get(reverse('main:beer_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['beers']), 2)

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Beers</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Brewery</th>
+                <th>Style</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for beer in beers %}
+                <tr>
+                    <td>{{ beer.name }}</td>
+                    <td>{{ beer.description }}</td>
+                    <td>{{ beer.brewery }}</td>
+                    <td>{{ beer.style }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
