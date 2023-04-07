@@ -1,9 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from main.models import *
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .forms import SignUpForm
-
 
 # Create your tests here.
 
@@ -171,3 +170,30 @@ class SignUpFormTest(TestCase):
         response = self.client.post(self.url, data=data)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(User.objects.filter(username=data['username']).exists())
+
+
+class LoginTestCase(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='password123',
+        )
+
+    def test_login(self):
+        response = self.client.post(reverse('main:login'), {
+            'username': 'testuser',
+            'password': 'password123',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('main:home'))
+
+    def test_invalid_login(self):
+        response = self.client.post(reverse('main:login'), {
+            'username': 'invaliduser',
+            'password': 'invalidpassword',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response,
+                            "Your username and password didn't match." +
+                            " Please try again.")
