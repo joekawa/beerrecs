@@ -7,7 +7,9 @@
   <p>Brewery: {{ beer.brewery.name }}</p>
   <p>Created by: {{ beer.created_by }}</p>
   <p>Created by: {{ beer.id }}</p>
-
+  <p>UPVOTES: {{ upvotes }}
+  <p>DOWNVOTES: {{ downvotes }}
+  <p>FAVORITES: {{ favorites }}
   <div>
     <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
       {% csrf_token %}

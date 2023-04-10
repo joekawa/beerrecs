@@ -26,8 +26,20 @@ def my_beers(request):
 
 def beer(request, id):
     beer = get_object_or_404(BEER, id=id)
+    beer_upvotes = ACTIVITY.objects.filter(
+      content_type=get_content_type_for_model(beer), activity='U',
+      object_id=beer.pk).count()
+    beer_downvotes = ACTIVITY.objects.filter(
+      content_type=get_content_type_for_model(beer),
+      activity='D', object_id=beer.pk).count()
+    beer_favorites = ACTIVITY.objects.filter(
+      content_type=get_content_type_for_model(beer), activity='F',
+      object_id=beer.pk).count()
 
-    return render(request, 'beer.html', {'beer': beer
+    return render(request, 'beer.html', {'beer': beer,
+                                         'upvotes': beer_upvotes,
+                                         'downvotes': beer_downvotes,
+                                         'favorites': beer_favorites
                                          })
 
 
