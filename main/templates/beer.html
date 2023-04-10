@@ -1,9 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Beer Page</title>
-</head>
-<body>
-    <h1>{{ name }}</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ beer.name }}</h1>
+  <p>{{ beer.description }}</p>
+  <p>Style: {{ beer.style }}</p>
+  <p>Brewery: {{ beer.brewery.name }}</p>
+  <p>Created by: {{ beer.created_by }}</p>
+  <p>Created by: {{ beer.id }}</p>
+
+  <div>
+    <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
+      {% csrf_token %}
+      <button type="submit">Upvote</button>
+    </form>
+
+    <form method="post" action="{% url 'main:beer_downvote' beer.id %}">
+      {% csrf_token %}
+      <button type="submit">Downvote</button>
+    </form>
+
+    <form method="post" action="{% url 'main:beer_favorite' beer.id %}">
+      {% csrf_token %}
+      <button type="submit">Favorite</button>
+    </form>
+  </div>
+
+{% endblock %}
