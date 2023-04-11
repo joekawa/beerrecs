@@ -4,10 +4,14 @@ from django.contrib.auth.models import User
 from .models import *
 
 
-class BeerInputForm(forms.ModelForm):
+class BeerForm(forms.ModelForm):
+
+    name = forms.CharField()
+    description = forms.CharField()
+    style = forms.CharField()
     class Meta:
         model = BEER
-        fields = ('name', 'description', 'brewery')
+        fields = ['name', 'description', 'style']
 
 
 class SignUpForm(UserCreationForm):

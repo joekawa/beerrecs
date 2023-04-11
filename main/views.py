@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import *
 from django.contrib.auth import authenticate, login
-from .forms import SignUpForm
+from .forms import SignUpForm, BeerForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.admin.options import get_content_type_for_model
 from django.urls import reverse
+from django.core.exceptions import MultipleObjectsReturned
 
 
 def home(request):
@@ -98,18 +99,18 @@ def login_view(request):
 def beer_upvote(request, beer_id):
     beer = BEER.objects.get(id=beer_id)
 
-    a = ACTIVITY.objects.get(user=request.user,
-                                       content_type=get_content_type_for_model(beer),
-                                       object_id=beer.pk)
-    if not a:
+    try:
+        a = ACTIVITY.objects.exclude(activity='F').get(user=request.user,
+                                      content_type=get_content_type_for_model(beer),
+                                      object_id=beer.pk)
+        if a.activity == 'D':
+            a.activity = 'U'
+            a.save()
+        else:
+            pass
+    except ACTIVITY.DoesNotExist:
         ACTIVITY.objects.create(user=request.user, activity='U',
                                 content_object=beer, object_id=beer.pk)
-    elif a.activity == 'D':
-        a.activity = 'U'
-        a.save()
-
-    elif a.activity == 'U':
-        pass
 
     return redirect(reverse('main:beer', args=[beer_id]))
 
@@ -117,18 +118,18 @@ def beer_upvote(request, beer_id):
 def beer_downvote(request, beer_id):
     beer = BEER.objects.get(id=beer_id)
 
-    a = ACTIVITY.objects.get(user=request.user,
-                                       content_type=get_content_type_for_model(beer),
-                                       object_id=beer.pk)
-    if not a:
+    try:
+        a = ACTIVITY.objects.exclude(activity='F').get(user=request.user,
+                                 content_type=get_content_type_for_model(beer),
+                                 object_id=beer.pk)
+        if a.activity == 'U':
+            a.activity = 'D'
+            a.save()
+        else:
+            pass
+    except ACTIVITY.DoesNotExist:
         ACTIVITY.objects.create(user=request.user, activity='D',
                                 content_object=beer, object_id=beer.pk)
-    elif a.activity == 'U':
-        a.activity = 'D'
-        a.save()
-
-    elif a.activity == 'D':
-        pass
 
     return redirect(reverse('main:beer', args=[beer_id]))
 
@@ -136,12 +137,27 @@ def beer_downvote(request, beer_id):
 def beer_favorite(request, beer_id):
     beer = BEER.objects.get(id=beer_id)
 
-    a = ACTIVITY.objects.get(user=request.user,
-                                       content_type=get_content_type_for_model(beer),
-                                       object_id=beer.pk,
-                                       activity= 'F')
-    if not a:
+    try:
+        a = ACTIVITY.objects.get(user=request.user,
+                                 content_type=get_content_type_for_model(beer),
+                                 object_id=beer.pk,
+                                 activity='F')
+
+    except ACTIVITY.DoesNotExist:
         ACTIVITY.objects.create(user=request.user, activity='F',
                                 content_object=beer, object_id=beer.pk)
 
     return redirect(reverse('main:beer', args=[beer_id]))
+
+
+def create_beer(request):
+    if request.method == 'POST':
+        form = BeerForm(request.POST)
+        if form.is_valid():
+            beer = form.save(commit=False)
+            beer.created_by = request.user
+            beer.save()
+            return redirect(reverse('main:beer', args=[beer.id]))
+    else:
+        form = BeerForm()
+    return render(request, 'create_beer.html', {'form': form})
