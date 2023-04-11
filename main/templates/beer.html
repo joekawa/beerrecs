@@ -13,11 +13,13 @@
     <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
       {% csrf_token %}
       <button type="submit">Upvote</button>
+      <span> {{ beer.upvote_count }}</span>
     </form>
 
     <form method="post" action="{% url 'main:beer_downvote' beer.id %}">
       {% csrf_token %}
       <button type="submit">Downvote</button>
+      <span> {{ beer.downvote_count }}</span>
     </form>
 
     <form method="post" action="{% url 'main:beer_favorite' beer.id %}">
@@ -30,6 +32,26 @@
       <input type="text" id="beer_tag" name='beer_tag'>
       <button type="submit">Submit</button>
   </form>
+  {% for t in beer_tags %}
+</form>
+  <span>
+    <form method="post" action="{% url 'main:tag_upvote' t.id %}">
+      {% csrf_token %}
+      <button type="submit">Upvote</button>
+      <span>{{ t.upvote_count }}</span>
+    </form>
+
+    {{ t.tag }}
+
+    <form method="post" action="{% url 'main:tag_downvote' t.id %}">
+      {% csrf_token %}
+      <button type="submit">Downvote</button>
+      <span>{{ t.downvote_count }}</span>
+    </form>
+
+  </span>
+
+  {% endfor %}
   </div>
 
 {% endblock %}

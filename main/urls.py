@@ -18,4 +18,6 @@ urlpatterns = [
     path('beer_downvote/<beer_id>', views.beer_downvote, name='beer_downvote'),
     path('beer_favorite/<beer_id>', views.beer_favorite, name='beer_favorite'),
     path('tag_beer/<beer_id>', views.tag_beer, name='tag_beer'),
+    path('tag_upvote/<tag_id>', views.tag_upvote, name='tag_upvote'),
+    path('tag_downvote/<tag_id>', views.tag_downvote, name='tag_downvote'),
 ]

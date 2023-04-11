@@ -36,11 +36,15 @@ def beer(request, id):
     beer_favorites = ACTIVITY.objects.filter(
       content_type=get_content_type_for_model(beer), activity='F',
       object_id=beer.pk).count()
+    beer_tags = TAG.objects.filter(beer=beer)
+
+
 
     return render(request, 'beer.html', {'beer': beer,
                                          'upvotes': beer_upvotes,
                                          'downvotes': beer_downvotes,
-                                         'favorites': beer_favorites
+                                         'favorites': beer_favorites,
+                                         'beer_tags': beer_tags
                                          })
 
 
@@ -168,4 +172,47 @@ def tag_beer(request, beer_id):
         beer_tag = request.POST.get('beer_tag')
         beer = BEER.objects.get(id=beer_id)
         TAG.objects.create(tag=beer_tag, beer=beer, created_by=request.user)
+        print('tag on beer created')
     return redirect(reverse('main:beer', args=[beer_id]))
+
+
+def tag_upvote(request, tag_id):
+    if request.method == 'POST':
+        tag = TAG.objects.get(id=tag_id)
+        print(tag)
+        try:
+            a = ACTIVITY.objects.get(user=request.user,
+                                      content_type=get_content_type_for_model(tag),
+                                      object_id=tag.pk)
+            print(a.activity)
+            if a.activity == 'D':
+                a.activity = 'U'
+                a.save()
+                print('changing flag')
+            else:
+                pass
+        except ACTIVITY.DoesNotExist:
+            ACTIVITY.objects.create(user=request.user, activity='U',
+                                    content_object=tag, object_id=tag.pk)
+            print('creating upvote')
+    tag.save()
+    return redirect(reverse('main:beer', args=[tag.beer.pk]))
+
+
+def tag_downvote(request, tag_id):
+    if request.method == 'POST':
+        tag = TAG.objects.get(id=tag_id)
+        try:
+            a = ACTIVITY.objects.get(user=request.user,
+                                      content_type=get_content_type_for_model(tag),
+                                      object_id=tag.pk)
+            if a.activity == 'U':
+                a.activity = 'D'
+                a.save()
+            else:
+                pass
+        except ACTIVITY.DoesNotExist:
+            ACTIVITY.objects.create(user=request.user, activity='D',
+                                    content_object=tag, object_id=tag.pk)
+    tag.save()
+    return redirect(reverse('main:beer', args=[tag.beer.pk]))

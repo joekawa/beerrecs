@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.options import get_content_type_for_model
+
 
 # Create your models here.
 
@@ -109,6 +111,17 @@ class BEER(models.Model):
     activity = GenericRelation(ACTIVITY)
     style = models.TextField(max_length=50, null=True)
 
+#! these counts don't work yet...need to figure out
+    upvote_count = models.IntegerField(default=0)
+    downvote_count = models.IntegerField(default=0)
+    favorite_count = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.upvote_count = self.activity.filter(activity='U').count()
+        self.downvote_count = self.activity.filter(activity='D').count()
+        self.favorite_count = self.activity.filter(activity='F').count()
+        super().save(*args, **kwargs)
+
 
 #! FAVORITE MODEL IS DEPRECIATED AND NOT USED
 class FAVORITE(models.Model):
@@ -123,4 +136,11 @@ class TAG(models.Model):
     beer = models.ForeignKey(BEER, on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    upvote_count = models.IntegerField(default=0)
+    downvote_count = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.upvote_count = self.activity.filter(activity='U').count()
+        self.downvote_count = self.activity.filter(activity='D').count()
+        super().save(*args, **kwargs)
 
