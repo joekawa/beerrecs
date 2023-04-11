@@ -24,6 +24,12 @@
       {% csrf_token %}
       <button type="submit">Favorite</button>
     </form>
+    <form method="POST" action="{% url 'main:tag_beer' beer.id%}">
+      {% csrf_token %}
+      <label for="my_text_input">Enter tag:</label>
+      <input type="text" id="beer_tag" name='beer_tag'>
+      <button type="submit">Submit</button>
+  </form>
   </div>
 
 {% endblock %}

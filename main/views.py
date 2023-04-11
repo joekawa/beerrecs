@@ -161,3 +161,11 @@ def create_beer(request):
     else:
         form = BeerForm()
     return render(request, 'create_beer.html', {'form': form})
+
+
+def tag_beer(request, beer_id):
+    if request.method == 'POST':
+        beer_tag = request.POST.get('beer_tag')
+        beer = BEER.objects.get(id=beer_id)
+        TAG.objects.create(tag=beer_tag, beer=beer, created_by=request.user)
+    return redirect(reverse('main:beer', args=[beer_id]))
