@@ -4,6 +4,11 @@
     <title>Brewery Page</title>
 </head>
 <body>
-    <h1>{{ name }}</h1>
+    <h1>{{ brewery.name }}</h1>
+    <p>{{ beer.description }}</p>
+    {% for b in beers %}
+    <p>{{ b.name }} {{ b.upvote_count }} {{ b .downvote_count }}
+      {{ b.favorite_count }}</p>
+    {% endfor %}
 </body>
 </html>

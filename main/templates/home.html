@@ -8,7 +8,24 @@
     <a href="{% url 'main:signup' %}">Sign Up</a>
     <p>
     <a href="{% url 'main:login' %}">Login</a>
+    </p>
     <p>
     <a href="{% url 'main:beer_list' %}">Beer List</a>
+    </p>
+    <p>
+        <div>
+            <form method="GET" action="{% url 'main:search' %}">
+                <div>
+                  <div>
+                    <input type='text'
+                    placeholder="Search for beers and breweries"
+                    name='query'>
+                  </div>
+                  <div>
+                    <button type='submit'">Search</button>
+                  </div>
+                </div>
+              </form>
+        </div>
 </body>
 </html>

@@ -4,6 +4,9 @@
     <title>Favorites</title>
 </head>
 <body>
-    <h1>{{ favorite_beers }}</h1>
+    {% for b in favorite_beers %}
+    <p>{{ b.name }} {{ b.upvote_count }} {{ beer.downvote_count }}
+       {{ b.favorite_count }}</p>
+       {% endfor %}
 </body>
 </html>

@@ -26,3 +26,9 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'password1', 'password2', 'email', 'first_name',
                   'last_name', 'city', 'state', 'zip_code')
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Search', max_length=100,
+                            widget=forms.TextInput(attrs={'class':
+                                                          'form-control'}))

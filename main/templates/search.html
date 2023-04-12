@@ -4,6 +4,8 @@
     <title>Search Results</title>
 </head>
 <body>
-    <h1>{{ message }}</h1>
+  {% for r in results %}
+  <p>{{ r.name }}</p>
+  {% endfor %}
 </body>
 </html>

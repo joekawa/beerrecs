@@ -1,19 +1,33 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import *
 from django.contrib.auth import authenticate, login
-from .forms import SignUpForm, BeerForm
+from .forms import SignUpForm, BeerForm, SearchForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.admin.options import get_content_type_for_model
 from django.urls import reverse
 from django.core.exceptions import MultipleObjectsReturned
+from django.db.models import Q
 
 
 def home(request):
-    return render(request, 'home.html', {'message': 'Welcome to my home page'})
+    form = SearchForm()
+    return render(request, 'home.html', {'message': 'Welcome to my home page',
+                                         'form': form})
 
 
 def search(request):
-    return render(request, 'search.html', {'message': 'Search successful'})
+    form = SearchForm()
+    results = []
+
+    if request.GET.get('query'):
+        query = request.GET.get('query')
+        print(query)
+        results2 = BREWERY.objects.filter(Q(name__icontains=query))
+        results1 = BEER.objects.filter(Q(name__icontains=query) |
+                                       Q(brewery__in=results2))
+        results = list(results1) + list(results2)
+    return render(request, 'search.html', {'results': results,
+                                           'form': form})
 
 
 def beer_list(request):
@@ -50,9 +64,10 @@ def beer(request, id):
 
 def brewery(request, id):
     brewery = get_object_or_404(BREWERY, id=id)
+    beers = BEER.objects.filter(brewery=brewery)
 
-    return render(request, 'brewery.html', {'name': brewery.name,
-                                            'description': brewery.description,
+    return render(request, 'brewery.html', {'brewery': brewery,
+                                            'beers': beers
                                             })
 
 
@@ -115,7 +130,7 @@ def beer_upvote(request, beer_id):
     except ACTIVITY.DoesNotExist:
         ACTIVITY.objects.create(user=request.user, activity='U',
                                 content_object=beer, object_id=beer.pk)
-
+    beer.save()
     return redirect(reverse('main:beer', args=[beer_id]))
 
 
@@ -134,7 +149,7 @@ def beer_downvote(request, beer_id):
     except ACTIVITY.DoesNotExist:
         ACTIVITY.objects.create(user=request.user, activity='D',
                                 content_object=beer, object_id=beer.pk)
-
+    beer.save()
     return redirect(reverse('main:beer', args=[beer_id]))
 
 
@@ -150,7 +165,7 @@ def beer_favorite(request, beer_id):
     except ACTIVITY.DoesNotExist:
         ACTIVITY.objects.create(user=request.user, activity='F',
                                 content_object=beer, object_id=beer.pk)
-
+    beer.save()
     return redirect(reverse('main:beer', args=[beer_id]))
 
 

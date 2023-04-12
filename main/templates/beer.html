@@ -6,9 +6,9 @@
   <p>Style: {{ beer.style }}</p>
   <p>Brewery: {{ beer.brewery.name }}</p>
   <p>Created by: {{ beer.created_by }}</p>
-  <p>UPVOTES: {{ upvotes }}
-  <p>DOWNVOTES: {{ downvotes }}
-  <p>FAVORITES: {{ favorites }}
+  <p>UPVOTES: {{ beer.upvote_count }}
+  <p>DOWNVOTES: {{ beer.downvote_count }}
+  <p>FAVORITES: {{ beer.favorite_count }}
   <div>
     <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
       {% csrf_token %}
@@ -25,6 +25,7 @@
     <form method="post" action="{% url 'main:beer_favorite' beer.id %}">
       {% csrf_token %}
       <button type="submit">Favorite</button>
+      <span> {{ beer.favorite_count }}</span>
     </form>
     <form method="POST" action="{% url 'main:tag_beer' beer.id%}">
       {% csrf_token %}
