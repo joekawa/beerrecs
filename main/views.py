@@ -15,6 +15,14 @@ def home(request):
                                          'form': form})
 
 
+def contact_us(request):
+    return render(request, 'contact_us.html')
+
+
+def about_us(request):
+    return render(request, 'about_us.html')
+
+
 def search(request):
     form = SearchForm()
     results = []

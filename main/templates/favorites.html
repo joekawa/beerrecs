@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Favorites</title>
-</head>
-<body>
-    {% for b in favorite_beers %}
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+  <p>
+{% for b in favorite_beers %}
     <p>{{ b.name }} {{ b.upvote_count }} {{ beer.downvote_count }}
        {{ b.favorite_count }}</p>
        {% endfor %}
-</body>
-</html>
+    </p>
+      </div>
+       {% endblock %}

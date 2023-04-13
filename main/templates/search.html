@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Results</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+  {% block content %}
   {% for r in results %}
   <p>{{ r.name }}</p>
   {% endfor %}
-</body>
-</html>
+  {% endblock %}
