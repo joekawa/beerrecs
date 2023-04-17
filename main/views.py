@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import SignUpForm, BeerForm, SearchForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.admin.options import get_content_type_for_model
@@ -10,9 +10,9 @@ from django.db.models import Q
 
 
 def home(request):
-    form = SearchForm()
+
     return render(request, 'home.html', {'message': 'Welcome to my home page',
-                                         'form': form})
+                                         })
 
 
 def contact_us(request):
@@ -121,6 +121,12 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
+
+def logout_user(request):
+    logout(request)
+
+    return redirect('main:home')
 
 
 def beer_upvote(request, beer_id):
