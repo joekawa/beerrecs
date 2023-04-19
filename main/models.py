@@ -10,6 +10,7 @@ from django.contrib.admin.options import get_content_type_for_model
 # Create your models here.
 
 STATES = (
+    ('', 'Select State'),
     ("AL", "Alabama"),
     ("AK", "Alaska"),
     ("AZ", "Arizona"),
