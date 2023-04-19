@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import SignUpForm, BeerForm, SearchForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.admin.options import get_content_type_for_model
@@ -95,13 +95,32 @@ def favorites(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        for f in form:
+              print(f.name, f.errors)
         if form.is_valid():
-            user = form.save()
             # authenticate the user and log them in
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            zip_code = form.cleaned_data.get('zip_code')
+            state = form.cleaned_data.get('state')
+            city = form.cleaned_data.get('city')
+            user = User.objects.create_user(username=username,
+                                            password=password)
+            user.save()
             user = authenticate(username=username, password=password)
             login(request, user)
+            profile = PROFILE.objects.create(user=user,
+                                             first_name=first_name,
+                                             last_name=last_name,
+                                             email=email,
+                                             zip_code=zip_code,
+                                             state=state,
+                                             city=city)
+            profile.save()
+            print('created user')
             return redirect('main:home')
     else:
         form = SignUpForm()
@@ -239,3 +258,9 @@ def tag_downvote(request, tag_id):
                                     content_object=tag, object_id=tag.pk)
     tag.save()
     return redirect(reverse('main:beer', args=[tag.beer.pk]))
+
+
+def logout_user(request):
+    logout(request)
+
+    return redirect('main:home')

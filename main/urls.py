@@ -13,6 +13,7 @@ urlpatterns = [
     path('favorites/', views.favorites, name='favorites'),
     path('signup', views.signup, name='signup'),
     path('login', views.login_view, name='login'),
+    path('logout', views.logout_user, name='logout'),
     path('create_beer', views.create_beer, name='create_beer'),
     path('about_us', views.about_us, name='about_us'),
     path('contact_us', views.contact_us, name='contact_us'),
