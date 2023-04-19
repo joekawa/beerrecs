@@ -10,9 +10,9 @@ from django.db.models import Q
 
 
 def home(request):
-    form = SearchForm()
+
     return render(request, 'home.html', {'message': 'Welcome to my home page',
-                                         'form': form})
+                                         })
 
 
 def contact_us(request):
@@ -59,8 +59,6 @@ def beer(request, id):
       content_type=get_content_type_for_model(beer), activity='F',
       object_id=beer.pk).count()
     beer_tags = TAG.objects.filter(beer=beer)
-
-
 
     return render(request, 'beer.html', {'beer': beer,
                                          'upvotes': beer_upvotes,
@@ -140,6 +138,12 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
+
+def logout_user(request):
+    logout(request)
+
+    return redirect('main:home')
 
 
 def beer_upvote(request, beer_id):

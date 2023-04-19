@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import TextInput, PasswordInput, EmailInput, Select
 from .models import *
+from django.forms import ModelForm, TextInput, EmailInput, PasswordInput, Select
+import os
 
 
 class BeerForm(forms.ModelForm):
@@ -10,6 +12,7 @@ class BeerForm(forms.ModelForm):
     name = forms.CharField()
     description = forms.CharField()
     style = forms.CharField()
+
     class Meta:
         model = BEER
         fields = ['name', 'description', 'style']
