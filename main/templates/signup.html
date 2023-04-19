@@ -1,10 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
+  <h2>Sign up for Beer Recs</h2>
+  <form method="post" class='row g-3' action="{% url 'main:signup' %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class='form-group'>
+    {{ form.username }}
+  </div>
+  <div class='form-group'>
+    {{ form.password1 }}
+  </div>
+  <div class='form-group'>
+    {{ form.password2 }}
+  </div>
+  <div class='form-group'>
+    {{ form.first_name }}
+  </div>
+  <div class='form-group'>
+    {{ form.last_name }}
+  </div>
+  <div class='form-group'>
+    {{ form.email }}
+  </div>
+  <div class='form-group'>
+    {{ form.city }}
+  </div>
+  <div class='form-group'>
+    {{ form.state }}
+  </div>
+  <div class='form-group'>
+    {{ form.zip_code }}
+  </div>
     <button type="submit">Sign up</button>
   </form>
 {% endblock %}

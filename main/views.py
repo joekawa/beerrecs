@@ -60,8 +60,6 @@ def beer(request, id):
       object_id=beer.pk).count()
     beer_tags = TAG.objects.filter(beer=beer)
 
-
-
     return render(request, 'beer.html', {'beer': beer,
                                          'upvotes': beer_upvotes,
                                          'downvotes': beer_downvotes,
@@ -95,13 +93,32 @@ def favorites(request):
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        for f in form:
+              print(f.name, f.errors)
         if form.is_valid():
-            user = form.save()
             # authenticate the user and log them in
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            email = form.cleaned_data.get('email')
+            zip_code = form.cleaned_data.get('zip_code')
+            state = form.cleaned_data.get('state')
+            city = form.cleaned_data.get('city')
+            user = User.objects.create_user(username=username,
+                                            password=password)
+            user.save()
             user = authenticate(username=username, password=password)
             login(request, user)
+            profile = PROFILE.objects.create(user=user,
+                                             first_name=first_name,
+                                             last_name=last_name,
+                                             email=email,
+                                             zip_code=zip_code,
+                                             state=state,
+                                             city=city)
+            profile.save()
+            print('created user')
             return redirect('main:home')
     else:
         form = SignUpForm()
