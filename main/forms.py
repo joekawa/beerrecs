@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms import TextInput, PasswordInput, EmailInput, Select
 from .models import *
@@ -65,3 +65,15 @@ class SearchForm(forms.Form):
     query = forms.CharField(label='Search', max_length=100,
                             widget=forms.TextInput(attrs={'class':
                                                           'form-control'}))
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=30, required=True,
+                               widget=TextInput(
+                                     attrs={'class': "form-control",
+                                            'placeholder': "Username"}))
+
+    password = forms.CharField(max_length=30, required=True,
+                               widget=PasswordInput(
+                                     attrs={'class': "form-control",
+                                            'placeholder': "Enter Password"}))

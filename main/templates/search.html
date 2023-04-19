@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 
   {% block content %}
-  {% for r in results %}
-  <p>{{ r.name }}</p>
-  {% endfor %}
+
+  <div>
+    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Brewery</th>
+        <th scope="col">Name</th>
+        <th scope="col">Likes</th>
+        <th scope="col">Dislikes</th>
+        <th scope="col">Favorites</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for r in results %}
+      <tr>
+        <td>placeholder</td>
+        <td>{{ r.name }}</td>
+        <td>10</td>
+        <td>10</td>
+        <td>10</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+    </div></div>
+
   {% endblock %}

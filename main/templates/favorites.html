@@ -2,11 +2,29 @@
 
 {% block content %}
 <div>
-  <p>
-{% for b in favorite_beers %}
-    <p>{{ b.name }} {{ b.upvote_count }} {{ beer.downvote_count }}
-       {{ b.favorite_count }}</p>
-       {% endfor %}
-    </p>
-      </div>
+  <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Brewery</th>
+      <th scope="col">Beer Name</th>
+      <th scope="col">Likes</th>
+      <th scope="col">Dislikes</th>
+      <th scope="col">Favorites</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for b in favorite_beers %}
+    <tr>
+      <td>placeholder</td>
+      <td>{{ b.name }}</td>
+      <td>{{ b.upvote_count }}</td>
+      <td>{{ b.downvote_count }}</td>
+      <td>{{ b.favorite_count }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+  </div></div>
+
        {% endblock %}

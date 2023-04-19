@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import *
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm, BeerForm, SearchForm
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .forms import SignUpForm, BeerForm, SearchForm, LoginForm
 from django.contrib.admin.options import get_content_type_for_model
 from django.urls import reverse
 from django.core.exceptions import MultipleObjectsReturned
@@ -127,7 +126,7 @@ def signup(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -136,7 +135,7 @@ def login_view(request):
                 login(request, user)
                 return redirect('main:home')
     else:
-        form = AuthenticationForm()
+        form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
 
@@ -264,7 +263,3 @@ def tag_downvote(request, tag_id):
     return redirect(reverse('main:beer', args=[tag.beer.pk]))
 
 
-def logout_user(request):
-    logout(request)
-
-    return redirect('main:home')

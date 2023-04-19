@@ -1,25 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Beers</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Brewery</th>
-                <th>Style</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for beer in beers %}
-                <tr>
-                    <td>{{ beer.name }}</td>
-                    <td>{{ beer.description }}</td>
-                    <td>{{ beer.brewery }}</td>
-                    <td>{{ beer.style }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+<div>
+    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Beer Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Brewery</th>
+        <th scope="col">Style</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for beer in beers %}
+        <tr>
+            <td>{{ beer.name }}</td>
+            <td>{{ beer.description }}</td>
+            <td>{{ beer.brewery.name }}</td>
+            <td>{{ beer.style }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
     </table>
-{% endblock %}
+    </div></div>
+
+         {% endblock %}
