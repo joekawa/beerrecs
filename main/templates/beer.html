@@ -1,58 +1,68 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>{{ beer.name }}</h1>
-  <p>{{ beer.description }}</p>
-  <p>Style: {{ beer.style }}</p>
-  <p>Brewery: {{ beer.brewery.name }}</p>
-  <p>Created by: {{ beer.created_by }}</p>
-  <p>UPVOTES: {{ beer.upvote_count }}
-  <p>DOWNVOTES: {{ beer.downvote_count }}
-  <p>FAVORITES: {{ beer.favorite_count }}
-  <div>
-    <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
-      {% csrf_token %}
-      <button type="submit">Upvote</button>
-      <span> {{ beer.upvote_count }}</span>
+
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col">
+      <h1>{{ beer.name }}</h1>
+      <p>{{ beer.description }}</p>
+      <p>Style: {{ beer.style }}</p>
+      <p>Brewery: {{ beer.brewery.name }}</p>
+      <p>Created by: {{ beer.created_by }}</p>
+      <p>UPVOTES: {{ beer.upvote_count }}
+      <p>DOWNVOTES: {{ beer.downvote_count }}
+      <p>FAVORITES: {{ beer.favorite_count }}
+    </div>
+    <div class="col">
+      <div>
+        <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
+          {% csrf_token %}
+          <button type="submit">Upvote</button>
+          <span> {{ beer.upvote_count }}</span>
+        </form>
+
+        <form method="post" action="{% url 'main:beer_downvote' beer.id %}">
+          {% csrf_token %}
+          <button type="submit">Downvote</button>
+          <span> {{ beer.downvote_count }}</span>
+        </form>
+
+        <form method="post" action="{% url 'main:beer_favorite' beer.id %}">
+          {% csrf_token %}
+          <button type="submit">Favorite</button>
+          <span> {{ beer.favorite_count }}</span>
+        </form>
+        <form method="POST" action="{% url 'main:tag_beer' beer.id%}">
+          {% csrf_token %}
+          <label for="my_text_input">Enter tag:</label>
+          <input type="text" id="beer_tag" name='beer_tag'>
+          <button type="submit">Submit</button>
+      </form>
+      {% for t in beer_tags %}
     </form>
+      <span>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit">Upvote</button>
+          <span>{{ t.upvote_count }}</span>
+        </form>
 
-    <form method="post" action="{% url 'main:beer_downvote' beer.id %}">
-      {% csrf_token %}
-      <button type="submit">Downvote</button>
-      <span> {{ beer.downvote_count }}</span>
-    </form>
+        {{ t.tag }}
 
-    <form method="post" action="{% url 'main:beer_favorite' beer.id %}">
-      {% csrf_token %}
-      <button type="submit">Favorite</button>
-      <span> {{ beer.favorite_count }}</span>
-    </form>
-    <form method="POST" action="{% url 'main:tag_beer' beer.id%}">
-      {% csrf_token %}
-      <label for="my_text_input">Enter tag:</label>
-      <input type="text" id="beer_tag" name='beer_tag'>
-      <button type="submit">Submit</button>
-  </form>
-  {% for t in beer_tags %}
-</form>
-  <span>
-    <form method="post" action="{% url 'main:tag_upvote' t.id %}">
-      {% csrf_token %}
-      <button type="submit">Upvote</button>
-      <span>{{ t.upvote_count }}</span>
-    </form>
+        <form method="post" action="{% url 'main:tag_downvote' t.id %}">
+          {% csrf_token %}
+          <button type="submit">Downvote</button>
+          <span>{{ t.downvote_count }}</span>
+        </form>
 
-    {{ t.tag }}
+      </span>
 
-    <form method="post" action="{% url 'main:tag_downvote' t.id %}">
-      {% csrf_token %}
-      <button type="submit">Downvote</button>
-      <span>{{ t.downvote_count }}</span>
-    </form>
-
-  </span>
-
-  {% endfor %}
+      {% endfor %}
+      </div>
+    </div>
   </div>
+</div>
+
 
 {% endblock %}
