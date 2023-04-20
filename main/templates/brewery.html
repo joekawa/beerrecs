@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{ brewery.name }}</h1>
+
+<div class="container">
+  <div class="row align-items-center">
+    <div class="col">
+      <h1>{{ brewery.name }}</h1>
     <p>{{ beer.description }}</p>
-    {% for b in beers %}
-    <p>{{ b.name }} {{ b.upvote_count }} {{ b.downvote_count }}
-      {{ b.favorite_count }}</p>
-    {% endfor %}
+    </div>
+    <div class="col">
+<table class='table table-borderless'>
+      {% for b in beers %}
+<tr>
+     <td>{{ b.name }} </td>
+     <td>{{ b.upvote_count }}</td>
+     <td>{{ b.downvote_count }}</td>
+      <td>{{ b.favorite_count }}</td>
+</tr>
+      {% endfor %}
+     </table>
+            </div>
+    </div>
+  </div>
+
+
 {% endblock %}
