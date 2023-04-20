@@ -3,28 +3,30 @@
 {% block content %}
 <div>
   <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col">Brewery</th>
-      <th scope="col">Beer Name</th>
-      <th scope="col">Likes</th>
-      <th scope="col">Dislikes</th>
-      <th scope="col">Favorites</th>
-    </tr>
-    </thead>
-    <tbody>
-      {% for b in favorite_beers %}
-    <tr>
-      <td>placeholder</td>
-      <td>{{ b.name }}</td>
-      <td>{{ b.upvote_count }}</td>
-      <td>{{ b.downvote_count }}</td>
-      <td>{{ b.favorite_count }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-  </table>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Brewery</th>
+        <th scope='col'>Style</th>
+        <th scope="col">Likes</th>
+        <th scope="col">Dislikes</th>
+        <th scope="col">Favorites</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for r in favorite_beers %}
+      <tr>
+        <td><a href="{%url 'main:beer' r.id %}">{{ r.name }}</a></td>
+        <td>{{ r.brewery.name }}</td>
+        <td>{{ r.upvote_count }}</td>
+        <td>{{ r.downvote_count }}</td>
+        <td>{{ r.favorite_count }}</td>
+        <td>{{ r.style }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
   </div></div>
 
        {% endblock %}

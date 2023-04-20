@@ -7,8 +7,9 @@
     <table class="table table-striped">
       <thead>
       <tr>
-        <th scope="col">Brewery</th>
         <th scope="col">Name</th>
+        <th scope="col">Brewery</th>
+        <th scope='col'>Style</th>
         <th scope="col">Likes</th>
         <th scope="col">Dislikes</th>
         <th scope="col">Favorites</th>
@@ -17,11 +18,12 @@
       <tbody>
         {% for r in results %}
       <tr>
-        <td>placeholder</td>
-        <td>{{ r.name }}</td>
-        <td>10</td>
-        <td>10</td>
-        <td>10</td>
+        <td><a href="{%url 'main:beer' r.id %}">{{ r.name }}</a></td>
+        <td>{{ r.brewery.name }}</td>
+        <td>{{ r.upvote_count }}</td>
+        <td>{{ r.downvote_count }}</td>
+        <td>{{ r.favorite_count }}</td>
+        <td>{{ r.style }}</td>
       </tr>
       {% endfor %}
     </tbody>

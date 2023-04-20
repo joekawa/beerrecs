@@ -42,7 +42,7 @@
       {% for t in beer_tags %}
     </form>
       <span>
-        <form method="post" action="{% url 'main:tag_downvote' t.id %}">
+        <form method="post" action="{% url 'main:tag_upvote' t.id %}">
           {% csrf_token %}
           <button type="submit" class="btn btn-outline-success" >Upvote</button>
           <span>{{ t.upvote_count }}</span>
