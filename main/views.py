@@ -30,9 +30,12 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         results2 = BREWERY.objects.filter(Q(name__icontains=query))
+        tags = TAG.objects.filter(Q(tag__icontains=query))
         results1 = BEER.objects.filter(Q(name__icontains=query) |
-                                       Q(brewery__in=results2))
-        results = list(results1) + list(results2)
+                                       Q(brewery__in=results2) |
+                                       Q(pk__in=tags.values_list('beer_id')) |
+                                       Q(style__icontains=query))
+        results = list(results1)
     return render(request, 'search.html', {'results': results,
                                            'form': form})
 
