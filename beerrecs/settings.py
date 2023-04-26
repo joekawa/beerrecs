@@ -76,12 +76,26 @@ WSGI_APPLICATION = 'beerrecs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'beerrecs_dev',
+        'USER': 'postgres',
+        'PASSWORD': 'K@ns@s1!',
+        'HOST': '127.0.0.1',
+        'PORT': '5433',
     }
 }
+
+#! this is default database.  replaced with postgres above
+#DATABASES = {
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.sqlite3',
+   #     'NAME': str(BASE_DIR / 'db.sqlite3'),
+    #},
+
+#}
 
 
 # Password validation

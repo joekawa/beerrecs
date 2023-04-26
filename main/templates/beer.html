@@ -16,53 +16,73 @@
     </div>
     <div class="col">
       <div>
+        <div class='row'>
+          <div class='col'>
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'main:beer_upvote' beer.id %}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-outline-success" >Upvote</button>
-          <span> {{ beer.upvote_count }}</span>
+          <button class='btn' type='submit'><i class="bi bi-arrow-up-square" >
+          </i></button>
+           <span> {{ beer.upvote_count }}</span>
         </form>
-
+      </div>
+      <div class='col'>
         <form method="post" action="{% url 'main:beer_downvote' beer.id %}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-outline-success" >Downvote</button>
+          <button class='btn' type='submit'><i class="bi bi-arrow-down-square" ></i></button>
           <span> {{ beer.downvote_count }}</span>
         </form>
-
+      </div>
+      <div class='col'>
         <form method="post" action="{% url 'main:beer_favorite' beer.id %}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-outline-success" >Favorite</button>
+          <button type="submit" class="btn" ><i class="bi bi-heart"></i></button>
           <span> {{ beer.favorite_count }}</span>
         </form>
-        <form method="POST" action="{% url 'main:tag_beer' beer.id%}">
+      </div>
+      </div>
+      <div class='row'>
+        <div class='col'>
+        <form method="POST" action="{% url 'main:tag_beer' beer.id%}" class='d-flex'>
           {% csrf_token %}
           <label for="Beer Tag">Enter tag:</label>
           <input type="text" id="beer_tag" name='beer_tag' class='form-control'>
           <button type="submit" class="btn btn-outline-success" >Submit</button>
       </form>
+    </div>
       {% endif %}
+    </div>
+    <div class='row'>
+
       {% for t in beer_tags %}
-    </form>
       <span>
         {% if user.is_authenticated %}
-        <form method="post" action="{% url 'main:tag_upvote' t.id %}">
+        <div class='col'>
+        <form method="post" action="{% url 'main:tag_upvote' t.id %}" class='d-flex'>
           {% csrf_token %}
-          <button type="submit" class="btn btn-outline-success" >Upvote</button>
+          <button class='btn' type='submit'><i class="bi bi-arrow-up-square" ></i></button>
           <span>{{ t.upvote_count }}</span>
         </form>
+      </div>
 {% endif %}
+<div class='col'>
         {{ t.tag }}
+</div>
 {% if user.is_authenticated %}
+<div class='col'>
         <form method="post" action="{% url 'main:tag_downvote' t.id %}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-outline-success" >Downvote</button>
+          <button class='btn' type='submit'><i class="bi bi-arrow-down-square" ></i></button>
           <span>{{ t.downvote_count }}</span>
         </form>
 {% endif %}
-      </span>
+</div>
 
+    </div>
       {% endfor %}
-      </div>
+
+    </div>
+    </div>
     </div>
   </div>
 </div>
