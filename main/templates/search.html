@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Search {% endblock %}
+
   {% block content %}
 
   <div>
@@ -19,7 +21,7 @@
         {% for r in results %}
       <tr>
         <td><a href="{%url 'main:beer' r.id %}">{{ r.name }}</a></td>
-        <td>{{ r.brewery.name }}</td>
+        <td><a href="{%url 'main:brewery' r.brewery.id %}">{{ r.brewery.name }}</a></td>
         <td>{{ r.upvote_count }}</td>
         <td>{{ r.downvote_count }}</td>
         <td>{{ r.favorite_count }}</td>

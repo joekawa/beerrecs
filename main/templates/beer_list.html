@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %} Beer List {% endblock %}
+
 {% block content %}
+<div class='col'>
+</div>
+<div class='col'>
     <div class='table-responsive'>
         <table class="table table-striped mx-auto">
             <thead>
@@ -17,7 +22,7 @@
               {% for r in beers %}
             <tr>
               <td><a href="{%url 'main:beer' r.id %}">{{ r.name }}</a></td>
-              <td>{{ r.brewery.name }}</td>
+              <td><a href="{%url 'main:brewery' r.brewery.id %}">{{ r.brewery.name }}</a></td>
               <td>{{ r.upvote_count }}</td>
               <td>{{ r.downvote_count }}</td>
               <td>{{ r.favorite_count }}</td>
@@ -26,6 +31,9 @@
             {% endfor %}
           </tbody>
           </table>
+        </div>
+      </div>
+        <div class='col'>
         </div>
 
 

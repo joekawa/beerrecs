@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Sign Up{% endblock %}
+
 {% block content %}
   <h2>Sign up for Beer Recs</h2>
   <form method="post" class='row g-3' action="{% url 'main:signup' %}">
