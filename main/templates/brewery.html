@@ -11,10 +11,23 @@
     <p>{{ beer.description }}</p>
     </div>
     <div class="col">
-<table class='table table-borderless'>
+      <h2>
+        {{ brewery.name }} Beers
+      </h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope='col'>Style</th>
+      <th scope="col">Likes</th>
+      <th scope="col">Dislikes</th>
+      <th scope="col">Favorites</th>
+    </tr>
+    </thead>
       {% for b in beers %}
 <tr>
-     <td>{{ b.name }} </td>
+     <td><a href="{% url 'main:beer' b.id %}">{{ b.name }}</a> </td>
+     <td>{{ b.style }}</td>
      <td>{{ b.upvote_count }}</td>
      <td>{{ b.downvote_count }}</td>
       <td>{{ b.favorite_count }}</td>
